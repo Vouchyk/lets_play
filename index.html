@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Go play?</title>
+  </head>
+  <body>
+    <h1>Йдемо гуляти в неділю???</h1>
+    <p>Спробуй тільки нажати 'Ні'</p>
+    <div id="map"></div>
+    <button class="yes" type="button" onclick="showMessage()">Так</button>
+    <button class="no" type="button" onclick="rejectMeeting()">Ні</button>
+
+    <script>
+      function showMessage() {
+        var currentDate = new Date();
+        var formattedDate = currentDate.toLocaleString();
+
+        var modal = document.createElement("div");
+        modal.style.position = "fixed";
+        modal.style.top = "0";
+        modal.style.left = "0";
+        modal.style.width = "100%";
+        modal.style.height = "100%";
+        modal.style.background = "rgba(0, 0, 0, 0.5)";
+        modal.style.display = "flex";
+        modal.style.flexDirection = "column";
+        modal.style.alignItems = "center";
+        modal.style.justifyContent = "center";
+
+        var message = document.createElement("p");
+        message.style.backgroundColor = "#fff";
+        message.style.padding = "20px";
+        message.style.borderRadius = "10px";
+        message.textContent = "ЧЕКАЮ НА ТЕБЕ В ТГ.\nКодове слово `Неділя` ";
+
+        modal.appendChild(message);
+
+        // Додайте карту Google Maps в модальне вікно
+        var mapContainer = document.createElement("div");
+        mapContainer.id = "map";
+        mapContainer.style.width = "300px";
+        mapContainer.style.height = "300px";
+        modal.appendChild(mapContainer);
+
+        document.body.appendChild(modal);
+
+        setTimeout(function () {
+          modal.remove();
+        }, 5000);
+      }
+
+      function rejectMeeting() {
+        var noButton = document.querySelector(".no");
+
+        if (noButton.dataset.rejectCount) {
+          // Якщо атрибут dataset.rejectCount встановлений, то це не перше натискання
+          noButton.dataset.rejectCount++;
+        } else {
+          // Якщо атрибут dataset.rejectCount не встановлений, то це перше натискання
+          noButton.dataset.rejectCount = 1;
+        }
+
+        if (noButton.dataset.rejectCount < 4) {
+          // Змінити місце розташування кнопки для перших трьох натискань
+          var randomX = Math.floor(
+            Math.random() * (window.innerWidth - noButton.offsetWidth)
+          );
+          var randomY = Math.floor(
+            Math.random() * (window.innerHeight - noButton.offsetHeight)
+          );
+
+          noButton.style.position = "absolute";
+          noButton.style.left = randomX + "px";
+          noButton.style.top = randomY + "px";
+        } else {
+          // Вивести повідомлення після четвертого натискання
+          alert(
+            "Схоже, ти не можеш прийти в неділю. Можливо, наступного разу!"
+          );
+        }
+      }
+    </script>
+  </body>
+</html>
